@@ -1,55 +1,78 @@
+import React from "react"
+import { useForm} from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup"
+import * as yup from "yup";
+
+const schema = yup.object({
+    firstName: yup.string().length(20).required(),
+    lastName: yup.string().length(20).required(),
+    middleName: yup.string().length(20),
+    dateOfBirth: yup.date().required(),
+    gender: yup.string().oneOf(["male, female"]).required(),
+    phoneNumber: yup.string().length(10).required(),
+    email: yup.string().email().required(),
+
+})
 function Form () {
+    const {register, handleSubmit, watch } = useForm({
+        mode:"onSubmit",
+        resolver: yupResolver(schema),
+    });
+    // console.log(watch());
+    const onSubmit = (data) => {
+        console.log(data);
+    }
     return (
         <div className="h-screen bg-gradient-to-br from-fuchsia-400 to-peach-500 to-red-300 flex justify-center items-center ">
-            <div className="max-w-2xl w-full bg-white p-10 ">
-            <form >
+            <div className="max-w-2xl w-full bg-white p-10 rounded-xl shadow-xl ">
+           <div className="max-w-xl">Company Registration Form</div>
+            <form onSubmit={handleSubmit(onSubmit)}>
         {/* Creating a form */}
         <div >
 
         <div>
 
         <label className="form-label" htmlFor="firstName">First Name</label>
-        <input type="text" name="firstName" id="firstName" />
+        <input type="text" {...register("firstName")} />
         </div>
         <div>
 
         <label className="form-label" htmlFor="lastName">Last Name</label>
-        <input type="text" name="lastName" id="lastName" />
+        <input type="text"     {...register("lasttName")}  />
         </div>
         <div>
 
         <label className="form-label" htmlFor="middleName">Middle Name</label>
-        <input type="text" name="middleName" id="middleName" />
+        <input type="text"     {...register("middleName")}  />
         </div>
         </div>
-
+        <div>Gender</div>
         <div>
             <label htmlFor="male">
-            <input type="radio" name="gender" value="male" id="male"/> Male
+            <input type="radio" {...register("gender")}  value="male" /> Male
             </label>
         </div>
 
         <div>
             <label htmlFor="female">
-            <input type="radio" name="gender" value="female" id="female"/> Female
+            <input type="radio"     {...register("gender")}  value="female" /> Female
             </label>
         </div>
 
         <div>
             <label htmlFor="dateOfBirth">Date of Birth</label>
-            <input type="date"  />
+            <input type="date"     {...register("dateOfBirth")}  />
         </div>
 
         <div>
             <label htmlFor="phoneNumber">Phone Number</label>
-            <input type="tel" placeholder="xxx-xxx-xxxx" />
+            <input type="tel" placeholder="xxx-xxx-xxxx"     {...register("phoneNumber")}  />
         </div>
 
         <div>
             <label htmlFor="email">Email</label>
-            <input type="email"
-            name="email" 
-            id="email"
+            <input type="email" 
+            {...register("email")} 
             placeholder="john.doe@email.com"
             />
         </div>
